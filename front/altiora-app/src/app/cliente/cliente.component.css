@@ -1,0 +1,13 @@
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+  }
+  
+  .is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .invalid-feedback {
+    color: #dc3545;
+  }
+  

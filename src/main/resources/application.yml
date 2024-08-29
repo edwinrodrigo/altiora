@@ -1,0 +1,22 @@
+server:
+   port: 8080
+   servlet:
+    context-path: /altiora-api
+spring:
+  application:
+    name: altiora-api
+  datasource:
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/altioraDB
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob: 
+            "[non_contextual_creation]": true
+    database: postgresql
+    show-sql: false
+    hibernate:
+     ddl-auto: update

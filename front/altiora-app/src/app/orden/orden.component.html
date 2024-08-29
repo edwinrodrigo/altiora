@@ -1,0 +1,99 @@
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-success" [routerLink]="'/articulo'">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    CREAR ARTICULOS
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-success" [routerLink]="'/cliente'">
+                    <i class="fa fa-male" aria-hidden="true"></i>
+                    CREAR CLIENTES
+                </button>
+            </div>
+            </div>
+        </div>
+    </div>
+ </div>
+
+ <br>
+ <br>
+ <br>
+
+<div class="container">
+    <h2>Creación de Orden</h2>
+    <form (ngSubmit)="onSubmit()">
+ 
+        <div *ngIf="exito" class="alert alert-success" role="alert">
+            Guardado con exito
+        </div>
+
+        <div *ngIf="mensajeError" class="alert alert-info" role="alert">
+            {{mensajeError}}
+          </div>
+
+        <table class="table">
+            <tr>
+                <td colspan="3">
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="orden.cliente.idCliente" name="cliente" (ngModelChange)="offAlert()" >
+                        <option selected value="-1">Seleccione un cliente</option>
+                        <option *ngFor="let cliente of clientes" [value]="cliente.idCliente">{{cliente.nombre}}  {{cliente.apellido}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select required class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="ordenDetalle.idArticulo" name="articulo">
+                        <option selected value="-1">Seleccione un articulo</option>
+                        <option *ngFor="let articulo of articulos" [value]="articulo.idArticulo">{{articulo.nombre}}   ${{articulo.precioUnitario}}</option>
+                    </select>
+                </td>
+                <td>
+                    <input id="cantidad" required type="number" class="form-control" placeholder="Cantidad" size="3" [(ngModel)]="ordenDetalle.cantidad" name="cantidadarticulo">
+
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-success" (click)="agregarArticulo()" >Agregar</button>
+                </td>
+            </tr>
+        </table>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Articulo</th>
+                <th class="text-center" scope="col">Cantidad</th>
+                <th class="text-center" scope="col">Precio Unitario</th>
+                <th class="text-center" scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let det of ordenDetalles let idx = index">
+                    <th scope="row">{{idx+1}}</th>
+                    <td>{{det.nombreArticulo}}</td>
+                    <td class="text-center">{{det.cantidad}}</td>
+                    <td class="text-center">${{det.costoUnitario}}</td>
+                    <td >${{det.total}}</td>
+              </tr>
+            </tbody>
+
+              <tfoot *ngIf="orden.total != null && orden.total > 0">
+                <tr>
+                    <th scope="row" colspan="4">Total</th>
+                    <th >${{orden.total}}</th>
+                </tr>
+              </tfoot>
+          </table>
+
+          <br>
+     
+      <button type="submit" class="btn btn-primary">Registrar Orden</button>
+    </form>
+  </div>
+  
