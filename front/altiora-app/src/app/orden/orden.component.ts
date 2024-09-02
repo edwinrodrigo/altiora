@@ -7,6 +7,7 @@ import { Cliente } from '../interfaces/cliente';
 import { Articulo } from '../interfaces/articulo';
 import { OrdenDetalle } from '../interfaces/ordenDetalle';
 import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-orden',
@@ -16,7 +17,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './orden.component.css'
 })
 export class OrdenComponent implements OnInit {
-
+  endpoint: string = "http://127.0.0.1:8080/altiora-api";
   clientes : Cliente[] = [];
   articulos : Articulo[] = [];
   ordenDetalles : OrdenDetalle[] = [];
@@ -25,8 +26,9 @@ export class OrdenComponent implements OnInit {
   fecha : Date = new Date();
   exito: boolean = false;
   mensajeError : string = "";
+  pathOrden: string = this.endpoint + "/orden";
 
-  constructor(private ordenService: OrdenService) {}
+  constructor(private ordenService: OrdenService, private httpClient: HttpClient) {}
 
   async ngOnInit() {
 
@@ -106,13 +108,40 @@ export class OrdenComponent implements OnInit {
     this.exito = false;
   }
 
-  onSubmit(): void {
-    this.orden.ordenDetalle = this.ordenDetalles;
+  async onSubmit(){
+    this.orden.ordenDetalle = this.ordenDetalles;  
     console.log(this.orden);
-    console.log(this.ordenService.saveOrden(this.orden));
-    this.exito = true;
-    console.log('Orden registrada:', this.orden);
-    alert('Orden registrada con éxito');
+    try{
+
+
+      let data: any;
+      let error:any;
+  
+      let requestPath = this.pathOrden;
+      let requestBody = this.orden;
+      let requestHeader = {};
+      let requestParams = {};
+
+       //let response = this.ordenService.saveOrden(this.orden);
+      let result = await this.httpClient.post(requestPath, requestBody, { headers: requestHeader, params: requestParams }).subscribe( 
+        result => data = result,
+        error => {
+          this.mensajeError = error.error.message,
+          this.exito = false;
+          return;
+        }
+      );
+      console.log(result);
+      //alert('Orden registrada con éxito');
+      this.exito = true;
+      console.log('Orden registrada:', this.orden);
+    } catch (e){
+      console.log(e);
+    }
+      
+    
+    
+    
   }
 
 }

@@ -23,6 +23,30 @@ export class OrdenService {
 
   async saveOrden(orden? : Orden) {
 
+    let data: any;
+    let error:any;
+
+    let requestPath = this.pathOrden;
+    let requestBody = orden;
+    let requestHeader = {};
+    let requestParams = {};
+    
+    //return await this.post(requestBody, requestParams, requestHeader, requestPath);
+    try{
+      let result = await this.httpClient.post(requestPath, requestBody, { headers: requestHeader, params: requestParams }).subscribe( item => data = item);
+      console.log(result);
+    }catch(e){
+      console.log(e);
+    }
+    
+    return data;
+    
+    
+  }
+
+
+  async saveOrdebk(orden? : Orden) {
+
     let requestPath = this.pathOrden;
     let requestBody = orden;
     let requestHeader = {};
